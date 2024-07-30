@@ -34,8 +34,8 @@ COPY --from=frontend-builder /home/node/app/package.json ./package.json
 COPY --from=frontend-builder /home/node/app/.next/standalone ./
 COPY --from=frontend-builder /home/node/app/.next/static ./.next/static
 
-COPY --from=mwader/static-ffmpeg:6.1.1 /ffmpeg /usr/local/bin/
-COPY --from=mwader/static-ffmpeg:6.1.1 /ffprobe /usr/local/bin/
+COPY --from=mwader/static-ffmpeg:7.0.1 /ffmpeg /usr/local/bin/
+COPY --from=mwader/static-ffmpeg:7.0.1 /ffprobe /usr/local/bin/
 
 COPY backend/migrations ./migrations
 COPY ./nginx.conf /etc/nginx/nginx.conf
