@@ -35,13 +35,8 @@ services:
       "
 
   clipable:
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - capabilities: [gpu]
     build: ./
-    image: ghcr.io/clipable/clipable:gpu-latest
+    image: ghcr.io/clipable/clipable:latest-gpu
     # All of these environment variables are documented here: https://github.com/clipable/clipable/wiki/Environment-Variables
     environment:
       MAX_UPLOAD_SIZE: 5GB
@@ -70,6 +65,11 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
 
 volumes:
   # Choose one set of volume defs to uncomment, relative path or named volume
