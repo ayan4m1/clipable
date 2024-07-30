@@ -1,4 +1,4 @@
-FROM golang as backend-build
+FROM golang AS backend-build
 
 ENV CGO_ENABLED=0
 ENV GOOS=linux
