@@ -7,15 +7,13 @@ WORKDIR /app
 COPY backend/ .
 RUN go build -o clipable
 
-FROM gplane/pnpm AS frontend-builder
+FROM jitesoft/node-yarn:iron AS frontend-builder
 WORKDIR /home/node/app
-COPY frontend/pnpm-lock.yaml frontend/.npmr[c] ./
-RUN pnpm fetch
+COPY frontend/.npmr[c] ./
 
 COPY frontend/ .
-RUN pnpm install -r --offline
-RUN pnpm build
-
+RUN yarn install
+RUN npm run build
 
 FROM node:alpine
 

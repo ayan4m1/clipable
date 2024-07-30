@@ -7,21 +7,19 @@ WORKDIR /app
 COPY backend/ .
 RUN go build -o clipable
 
-FROM gplane/pnpm AS frontend-builder
+FROM jitesoft/node-yarn:iron AS frontend-builder
 WORKDIR /home/node/app
-COPY frontend/pnpm-lock.yaml frontend/.npmr[c] ./
-RUN pnpm fetch
+COPY frontend/.npmr[c] ./
 
 COPY frontend/ .
-RUN pnpm install -r --offline
-RUN pnpm build
+RUN yarn install
+RUN npm run build
 
 FROM ghcr.io/aperim/nvidia-cuda-ffmpeg:12.2.2-6.1.1-ubuntu22.04-0.3.6
 WORKDIR /clipable
 RUN apt update && apt install -y --no-install-recommends curl nginx && \
         curl -fsSL https://deb.nodesource.com/setup_21.x | bash - && \
         apt install -y nodejs supervisor && \
-        npm install pnpm
 
 ENV NODE_ENV production
 

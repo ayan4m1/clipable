@@ -1,1 +1,1 @@
-frontend: cd frontend && pnpm run dev
+frontend: cd frontend && npm run dev
