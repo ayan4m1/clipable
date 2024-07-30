@@ -19,7 +19,7 @@ FROM ghcr.io/aperim/nvidia-cuda-ffmpeg:12.2.2-6.1.1-ubuntu22.04-0.3.6
 WORKDIR /clipable
 RUN apt update && apt install -y --no-install-recommends curl nginx && \
         curl -fsSL https://deb.nodesource.com/setup_21.x | bash - && \
-        apt install -y nodejs supervisor && \
+        apt install -y nodejs supervisor
 
 ENV NODE_ENV production
 
