@@ -16,8 +16,8 @@ services:
     volumes:
       - minio-data:/data
     # Uncomment to expose admin interface for minio
-    ports:
-      - 9001:9001
+    #ports:
+    #  - 9001:9001
     environment:
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
@@ -58,7 +58,7 @@ services:
       S3_SECURE: false
     ports:
       # Change this port if you are already using 8080 elsewhere
-      - 8080:80
+      - 80:80
     depends_on:
       postgres:
         condition: service_healthy
