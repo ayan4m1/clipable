@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
 
-export function Home() {
+function Home() {
   const [videos, setVideos] = useState<Clip[] | null>(null);
   const [videoProgresses, setVideoProgresses] = useState<ProgressObject>({});
 
@@ -107,6 +107,6 @@ export function Home() {
   );
 }
 
-export default function HomeWrapper() {
+export default function HomePage() {
   return <Suspense><Home /></Suspense>;
 }
