@@ -1,12 +1,10 @@
-version: '3.1'
-
 services:
   postgres:
     image: postgres:14
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - pg-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres"]
       interval: 1s
@@ -16,9 +14,10 @@ services:
   minio:
     image: minio/minio
     volumes:
-      - minio_data:/data
-    # ports:
-    #   - 9001:9001
+      - minio-data:/data
+    # Uncomment to expose admin interface for minio
+    #ports:
+    #  - 9001:9001
     environment:
       - "MINIO_ACCESS_KEY=minio"
       - "MINIO_SECRET_KEY=myminiokeythatishouldchange123"
@@ -41,11 +40,12 @@ services:
         reservations:
           devices:
             - capabilities: [gpu]
+    build: ./
     image: ghcr.io/clipable/clipable:gpu-latest
     # All of these environment variables are documented here: https://github.com/clipable/clipable/wiki/Environment-Variables
     environment:
       MAX_UPLOAD_SIZE: 5GB
-      FFMPEG_CONCURRENCY: 1 
+      FFMPEG_CONCURRENCY: 1
       FFMPEG_THREADS: 0
       FFMPEG_PRESET: p4
       FFMPEG_TUNE: hq
@@ -65,11 +65,25 @@ services:
       NVIDIA_VISIBLE_DEVICES: all
       NVIDIA_DRIVER_CAPABILITIES: all
     ports:
+      # Change this port if you are already using 8080 elsewhere
       - 80:80
     depends_on:
       postgres:
         condition: service_healthy
 
 volumes:
-  pg_data: {}
-  minio_data: {}
+  # Choose one set of volume defs to uncomment, relative path or named volume
+  pg-data:
+  minio-data:
+  #pg-data:
+  #  driver: local
+  #  driver_opts:
+  #    o: bind
+  #    type: none
+  #    device: ./pg-data
+  #minio-data:
+  #  driver: local
+  #  driver_opts:
+  #    o: bind
+  #    type: none
+  #    device: ./minio-data

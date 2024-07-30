@@ -4,7 +4,7 @@ services:
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - pg-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres"]
       interval: 1s
@@ -14,7 +14,8 @@ services:
   minio:
     image: minio/minio
     volumes:
-      - minio_data:/data
+      - minio-data:/data
+    # Uncomment to expose admin interface for minio
     # ports:
     #   - 9001:9001
     environment:
@@ -32,7 +33,9 @@ services:
       /usr/bin/mc mb clipable/clips;
       exit 0;
       "
+
   clipable:
+    build: ./
     image: ghcr.io/clipable/clipable:latest
     # All of these environment variables are documented here: https://github.com/clipable/clipable/wiki/Environment-Variables
     environment:
@@ -54,11 +57,25 @@ services:
       S3_ADDRESS: minio:9000
       S3_SECURE: false
     ports:
+      # Change this port if you are already using 8080 elsewhere
       - 80:80
     depends_on:
       postgres:
         condition: service_healthy
 
 volumes:
-  pg_data: {}
-  minio_data: {}
+  # Choose one set of volume defs to uncomment, relative path or named volume
+  pg-data:
+  minio-data:
+  #pg-data:
+  #  driver: local
+  #  driver_opts:
+  #    o: bind
+  #    type: none
+  #    device: ./pg-data
+  #minio-data:
+  #  driver: local
+  #  driver_opts:
+  #    o: bind
+  #    type: none
+  #    device: ./minio-data
