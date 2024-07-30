@@ -15,9 +15,10 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@ayan4m1/react-shaka-player@file:../../react-shaka-player":
+"@ayan4m1/react-shaka-player@^2.0.0":
   version "2.0.0"
-  resolved "file:../../react-shaka-player"
+  resolved "https://registry.npmjs.org/@ayan4m1/react-shaka-player/-/react-shaka-player-2.0.0.tgz"
+  integrity sha512-PMQqZbiOAyoVh/zDGCVvGZcofDFywkzfNB3NhbGURuPGxcmwGnRkQKPmccAZLxRCP7c+YjsFAdUF6lu+yU6fuA==
   dependencies:
     shaka-player "3.x"
 
@@ -3171,6 +3172,11 @@ electron-to-chromium@^1.4.820:
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.3.tgz"
   integrity sha512-QNdYSS5i8D9axWp/6XIezRObRHqaav/ur9z1VzCDUCH1XIFOr9WQk5xmgunhsTpjjgDy3oLxO/WMOVZlpUQrlA==
 
+eme-encryption-scheme-polyfill@^2.1.1:
+  version "2.1.5"
+  resolved "https://registry.npmjs.org/eme-encryption-scheme-polyfill/-/eme-encryption-scheme-polyfill-2.1.5.tgz"
+  integrity sha512-z9BKXV4TCYjmar0wiZLObZ0J8HE13VIg7Zq/iyPWdbEfROtxVXEJalknWKtBR5XNezzy15/zWS964TGbcAWlPg==
+
 emoji-regex@^8.0.0:
   version "8.0.0"
   resolved "https://registry.npmjs.org/emoji-regex/-/emoji-regex-8.0.0.tgz"
@@ -6134,7 +6140,7 @@ react-zdog@>=1.0:
     react-dom "^18.2.0"
     resize-observer-polyfill "^1.5.1"
 
-react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", react@^18.0.0, react@^18.2.0, react@^18.3.1, "react@>= 16", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", react@>=16.13, react@>=16.8, react@>=17.0, react@>=18.0, react@>=18.0.0, "react@16.8.0  || >=17.0.0 || >=18.0.0", react@18.2.0, react@18.3.1:
+react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", react@^18.0.0, react@^18.2.0, react@^18.3.1, "react@>= 16", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", react@>=16.13, react@>=16.8, react@>=17.0, react@>=18.0, react@>=18.0.0, "react@16.8.0  || >=17.0.0 || >=18.0.0", "react@16.8.x || 17 || 18", react@18.2.0, react@18.3.1:
   version "18.3.1"
   resolved "https://registry.npmjs.org/react/-/react-18.3.1.tgz"
   integrity sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==
@@ -6502,6 +6508,13 @@ setprototypeof@1.2.0:
   version "1.2.0"
   resolved "https://registry.npmjs.org/setprototypeof/-/setprototypeof-1.2.0.tgz"
   integrity sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==
+
+shaka-player@3.x:
+  version "3.3.19"
+  resolved "https://registry.npmjs.org/shaka-player/-/shaka-player-3.3.19.tgz"
+  integrity sha512-tZowO6D2nlKTYQadiAZ5LcjhJSW5/OO8UVkEax3llgDTusFkjoV1CQCXYVks80pDLAwTWC6kwY5JDobWwC9mJw==
+  dependencies:
+    eme-encryption-scheme-polyfill "^2.1.1"
 
 shallow-clone@^3.0.0:
   version "3.0.1"
