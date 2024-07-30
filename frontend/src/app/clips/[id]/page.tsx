@@ -4,24 +4,25 @@ import { deleteCip, getClip, Clip, updateClipDetails } from "@/shared/api";
 import { formatDate } from "@/shared/date-formatter";
 import { formatViewsCount } from "@/shared/views-formatter";
 import dynamic from "next/dynamic";
-import { useState, useEffect, useContext } from "react";
-import "@mkhuda/react-shaka-player/dist/ui.css";
+import { useState, useEffect, useContext, useRef, useCallback } from "react";
+import "@ayan4m1/react-shaka-player/dist/ui.css";
 import Link from "next/link";
 import "./player.scss";
 import { UserContext } from "@/context/user-context";
 import { useRouter } from "next/navigation";
 import Modal from "@/shared/modal";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import type { PlayerRefs } from "@ayan4m1/react-shaka-player";
 
-const ReactShakaPlayer = dynamic(() => import("@mkhuda/react-shaka-player").then((module) => module.ReactShakaPlayer), {
+const ShakaPlayer = dynamic(() => import("@ayan4m1/react-shaka-player").then((module) => module.ReactShakaPlayer), {
   ssr: false,
 });
 
 export default function Page({ params }: { params: { id: string } }) {
+  const [mainPlayer, setMainPlayer] = useState<PlayerRefs>();
   const [videoDetails, setVideoDetails] = useState<Clip | null>(null);
   const userContext = useContext(UserContext);
   const router = useRouter();
-  let [mainPlayer, setMainPlayer] = useState({});
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [videoTitle, setVideoTitle] = useState("");
@@ -29,8 +30,11 @@ export default function Page({ params }: { params: { id: string } }) {
   const [videoUnlisted, setVideoUnlisted] = useState(false);
 
   useEffect(() => {
-    const { player, videoElement } = mainPlayer as { player: any; videoElement: HTMLVideoElement };
-    if (!player) return;
+    const { player, videoElement } = mainPlayer as unknown as { player: any; videoElement: HTMLVideoElement; };
+
+    if (!player) {
+      return;
+    }
 
     const play = async () => {
       videoElement.onvolumechange = () => {
@@ -45,25 +49,26 @@ export default function Page({ params }: { params: { id: string } }) {
       player.unload();
       videoElement.onvolumechange = null;
     };
-  }, [mainPlayer]);
 
-  const fetchVideo = async () => {
+  }, [mainPlayer, params.id]);
+
+  const fetchVideo = useCallback(async () => {
     const vid = await getClip(params.id);
     if (!vid) return;
     setVideoDetails(vid);
     setVideoTitle(vid.title);
     setVideoDescription(vid.description || "");
     setVideoUnlisted(vid.unlisted);
-  };
+  }, [params.id]);
 
   useEffect(() => {
     fetchVideo();
-  }, [params.id]);
+  }, [fetchVideo, params.id]);
 
   return (
     <main className={`mt-2`}>
       <div className="w-fit mx-auto">
-        <ReactShakaPlayer onLoad={(player) => setMainPlayer(player)} uiConfig={{
+        <ShakaPlayer onLoad={(player: PlayerRefs) => setMainPlayer(player)} uiConfig={{
           'overflowMenuButtons': ['picture_in_picture', 'playback_rate', 'quality'],
           'controlPanelElements': ['play_pause','time_and_duration', 'mute', 'volume', 'spacer', 'overflow_menu', 'fullscreen',]
         }} autoPlay />
