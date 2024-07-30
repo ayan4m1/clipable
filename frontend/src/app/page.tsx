@@ -4,9 +4,9 @@ import { getClips, Progress, Clip, ProgressObject, searchClips } from "@/shared/
 import ClipCard from "@/shared/clip-card";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, Suspense } from "react";
 
-export default function Home() {
+export function Home() {
   const [videos, setVideos] = useState<Clip[] | null>(null);
   const [videoProgresses, setVideoProgresses] = useState<ProgressObject>({});
 
@@ -105,4 +105,8 @@ export default function Home() {
       </div>
     </main>
   );
+}
+
+export default function HomeWrapper() {
+  return <Suspense><Home /></Suspense>;
 }
