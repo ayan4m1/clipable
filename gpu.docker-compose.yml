@@ -36,8 +36,10 @@ services:
 
   clipable:
     build:
-      context: ./
+      context: .
       dockerfile: gpu.Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_TITLE: ${SITE_TITLE}
     image: ghcr.io/clipable/clipable:latest-gpu
     # All of these environment variables are documented here: https://github.com/clipable/clipable/wiki/Environment-Variables
     environment:
