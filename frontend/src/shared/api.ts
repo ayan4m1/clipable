@@ -176,3 +176,5 @@ export const updateClipDetails = async (
   });
   return response.ok;
 };
+
+export const getSiteTitle = () => process.env.NEXT_PUBLIC_SITE_TITLE;

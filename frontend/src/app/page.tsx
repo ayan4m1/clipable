@@ -4,7 +4,7 @@ import Link from "next/link";
 import ClipCard from "@/shared/clip-card";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
-import { getClips, Progress, Clip, ProgressObject, searchClips } from "@/shared/api";
+import { getClips, Progress, Clip, ProgressObject, searchClips, getSiteTitle } from "@/shared/api";
 
 import SuspenseFallback from "./suspenseFallback";
 import { Helmet } from "react-helmet";
@@ -84,7 +84,7 @@ function Home() {
   return (
     <main className="h-full">
       <Helmet>
-        <title>Clipable - Home</title>
+        <title>{getSiteTitle()} - Home</title>
       </Helmet>
       <div className="flex justify-center py-3 mx-3">
         {videos?.length === 0 && (

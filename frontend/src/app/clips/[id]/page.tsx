@@ -1,7 +1,7 @@
 "use client";
 
 import { Helmet } from "react-helmet";
-import { deleteCip, getClip, Clip, updateClipDetails } from "@/shared/api";
+import { deleteCip, getClip, Clip, updateClipDetails, getSiteTitle } from "@/shared/api";
 import { formatDate } from "@/shared/date-formatter";
 import { formatViewsCount } from "@/shared/views-formatter";
 import dynamic from "next/dynamic";
@@ -72,7 +72,9 @@ export default function Page({ params }: Props) {
   return (
     <main className={`mt-2`}>
       <Helmet>
-        <title>Clipable - {videoTitle}</title>
+        <title>
+          {getSiteTitle()} - {videoTitle}
+        </title>
       </Helmet>
       <div className="w-fit mx-auto">
         <ShakaPlayer

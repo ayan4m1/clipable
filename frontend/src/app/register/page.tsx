@@ -2,7 +2,7 @@
 
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { register, registrationAllowed } from "@/shared/api";
+import { getSiteTitle, register, registrationAllowed } from "@/shared/api";
 import { UserContext } from "@/context/user-context";
 import Alert from "@/shared/alert";
 import { Helmet } from "react-helmet";
@@ -68,7 +68,7 @@ export default function Home() {
     return (
       <main className="h-screen">
         <Helmet>
-          <title>Clipable - Register</title>
+          <title>{getSiteTitle()} - Register</title>
         </Helmet>
         <div className="container mx-auto flex flex-col space-y-6 justify-center items-center py-3">
           <Alert type="error" message="Registration is disabled for this site" />
@@ -80,7 +80,7 @@ export default function Home() {
   return (
     <main className="h-screen">
       <Helmet>
-        <title>Clipable - Register</title>
+        <title>{getSiteTitle()} - Register</title>
       </Helmet>
       <div className="container mx-auto flex flex-col space-y-6 justify-center items-center py-3">
         {state !== State.Idle && (

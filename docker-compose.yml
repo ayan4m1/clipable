@@ -35,7 +35,10 @@ services:
       "
 
   clipable:
-    build: ./
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_SITE_TITLE: ${SITE_TITLE}
     image: ghcr.io/clipable/clipable:latest
     # All of these environment variables are documented here: https://github.com/clipable/clipable/wiki/Environment-Variables
     environment:

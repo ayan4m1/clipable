@@ -1,6 +1,15 @@
 "use client";
 
-import { getUsersClips, Progress, Clip, ProgressObject, getCurrentUser, getUser, User } from "@/shared/api";
+import {
+  getUsersClips,
+  Progress,
+  Clip,
+  ProgressObject,
+  getCurrentUser,
+  getUser,
+  User,
+  getSiteTitle,
+} from "@/shared/api";
 import VideoCard from "@/shared/clip-card";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -55,7 +64,9 @@ export default function Home({ params }: { params: { id: string } }) {
   return (
     <div>
       <Helmet>
-        <title>Clipable - User {userInfo?.username}</title>
+        <title>
+          {getSiteTitle()} - User {userInfo?.username}
+        </title>
       </Helmet>
       <main className="h-full">
         <div className="container mx-auto py-3">

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSpring, animated } from "react-spring";
 import { Helmet } from "react-helmet";
+import { getSiteTitle } from "@/shared/api";
 
 enum State {
   Idle,
@@ -134,7 +135,7 @@ export default function Home() {
   return (
     <main className="h-full">
       <Helmet>
-        <title>Clipable - Upload</title>
+        <title>{getSiteTitle()} - Upload</title>
       </Helmet>
       <div className="container w-fit mx-auto flex flex-col space-y-6 justify-center items-center py-3">
         <div className="form-control w-full max-w-xs">

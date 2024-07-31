@@ -9,9 +9,13 @@ RUN go build -o clipable
 
 FROM jitesoft/node-yarn:iron AS frontend-builder
 WORKDIR /home/node/app
-COPY frontend/.npmr[c] ./
 
+COPY frontend/.npmr[c] ./
 COPY frontend/ .
+
+ARG NEXT_PUBLIC_SITE_TITLE="Clipable"
+ENV NEXT_PUBLIC_SITE_TITLE ${NEXT_PUBLIC_SITE_TITLE}
+
 RUN yarn install
 RUN npm run build
 

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { UserContext } from "@/context/user-context";
-import { login, registrationAllowed } from "@/shared/api";
+import { getSiteTitle, login, registrationAllowed } from "@/shared/api";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 
@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <main className="h-screen">
       <Helmet>
-        <title>Clipable - Login</title>
+        <title>{getSiteTitle()} - Login</title>
       </Helmet>
       <div className="container mx-auto flex flex-col space-y-6 justify-center items-center py-3">
         <form className="form-control w-full max-w-xs" onSubmit={loginUser} id="loginForm">
