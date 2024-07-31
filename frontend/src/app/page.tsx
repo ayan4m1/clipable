@@ -1,10 +1,13 @@
 "use client";
 
-import { getClips, Progress, Clip, ProgressObject, searchClips } from "@/shared/api";
-import ClipCard from "@/shared/clip-card";
 import Link from "next/link";
+import ClipCard from "@/shared/clip-card";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
+import { getClips, Progress, Clip, ProgressObject, searchClips } from "@/shared/api";
+
+import SuspenseFallback from "./suspenseFallback";
+import { Helmet } from "react-helmet";
 
 function Home() {
   const [videos, setVideos] = useState<Clip[] | null>(null);
@@ -58,7 +61,7 @@ function Home() {
         setVideos(
           videos.map((video) => {
             return { ...video, processing: false };
-          })
+          }),
         );
         clearInterval(interval);
         return;
@@ -70,7 +73,7 @@ function Home() {
           // If the clip progress is -2, it failed to encode, so we don't want to show it
           .filter((video) => clips[video.id] !== -2)
           // If the clip is still processing, but we don't have a progress value for it, set it to be done processing
-          .map((video) => ({ ...video, processing: video.processing && !!clips[video.id] }))
+          .map((video) => ({ ...video, processing: video.processing && !!clips[video.id] })),
       );
       setVideoProgresses(clips);
     };
@@ -80,6 +83,9 @@ function Home() {
 
   return (
     <main className="h-full">
+      <Helmet>
+        <title>Clipable - Home</title>
+      </Helmet>
       <div className="flex justify-center py-3 mx-3">
         {videos?.length === 0 && (
           <div className="flex flex-col items-center justify-center w-full">
@@ -108,5 +114,9 @@ function Home() {
 }
 
 export default function HomePage() {
-  return <Suspense><Home /></Suspense>;
+  return (
+    <Suspense fallback={<SuspenseFallback />}>
+      <Home />
+    </Suspense>
+  );
 }

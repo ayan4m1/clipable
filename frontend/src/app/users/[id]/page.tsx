@@ -1,21 +1,23 @@
 "use client";
 
-import { getUsersClips, Progress, Clip, ProgressObject } from "@/shared/api";
+import { getUsersClips, Progress, Clip, ProgressObject, getCurrentUser, getUser, User } from "@/shared/api";
 import VideoCard from "@/shared/clip-card";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
 
 export default function Home({ params }: { params: { id: string } }) {
+  const [userInfo, setUserInfo] = useState<User>();
   const [videos, setVideos] = useState<Clip[]>([]);
   const [videoProgresses, setVideoProgresses] = useState<ProgressObject>({});
 
   useEffect(() => {
     const getVids = async () => {
-      const vids = await getUsersClips(params.id);
-      setVideos(vids);
+      setUserInfo(await getUser(params.id));
+      setVideos(await getUsersClips(params.id));
     };
     getVids();
-  }, []);
+  }, [params.id]);
 
   useEffect(() => {
     const getProgress = async () => {
@@ -33,7 +35,7 @@ export default function Home({ params }: { params: { id: string } }) {
         setVideos(
           videos.map((video) => {
             return { ...video, processing: false };
-          })
+          }),
         );
         clearInterval(interval);
         return;
@@ -42,7 +44,7 @@ export default function Home({ params }: { params: { id: string } }) {
       setVideos(
         videos.map((video) => {
           return { ...video, processing: video.processing && !!clips[video.id] };
-        })
+        }),
       );
       setVideoProgresses(clips);
     };
@@ -51,22 +53,27 @@ export default function Home({ params }: { params: { id: string } }) {
   }, [videos]);
 
   return (
-    <main className="h-full">
-      <div className="container mx-auto py-3">
-        <ul role="list" className="grid grid-cols-3 gap-24">
-          {videos.map((video) => (
-            <li key={video.id}>
-              {video.processing ? (
-                <VideoCard video={video} progress={videoProgresses[video.id]} />
-              ) : (
-                <Link href={`/clips/${video.id}`}>
-                  <VideoCard video={video} />
-                </Link>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </main>
+    <div>
+      <Helmet>
+        <title>Clipable - User {userInfo?.username}</title>
+      </Helmet>
+      <main className="h-full">
+        <div className="container mx-auto py-3">
+          <ul role="list" className="grid grid-cols-3 gap-24">
+            {videos.map((video) => (
+              <li key={video.id}>
+                {video.processing ? (
+                  <VideoCard video={video} progress={videoProgresses[video.id]} />
+                ) : (
+                  <Link href={`/clips/${video.id}`}>
+                    <VideoCard video={video} />
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </main>
+    </div>
   );
 }

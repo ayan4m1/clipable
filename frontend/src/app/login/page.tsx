@@ -1,9 +1,10 @@
 "use client";
 
-import { FormEvent, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { login, registrationAllowed } from "@/shared/api";
 import { UserContext } from "@/context/user-context";
+import { login, registrationAllowed } from "@/shared/api";
+import { FormEvent, useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 
 export default function Home() {
   const router = useRouter();
@@ -20,7 +21,6 @@ export default function Home() {
     getRegistrationAllowed();
   }, []);
 
-
   const loginUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const ok = await login(username, password);
@@ -32,6 +32,9 @@ export default function Home() {
 
   return (
     <main className="h-screen">
+      <Helmet>
+        <title>Clipable - Login</title>
+      </Helmet>
       <div className="container mx-auto flex flex-col space-y-6 justify-center items-center py-3">
         <form className="form-control w-full max-w-xs" onSubmit={loginUser} id="loginForm">
           <label className="label" htmlFor="username">

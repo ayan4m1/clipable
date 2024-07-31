@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { register, registrationAllowed } from "@/shared/api";
 import { UserContext } from "@/context/user-context";
 import Alert from "@/shared/alert";
+import { Helmet } from "react-helmet";
 
 enum State {
   Idle,
@@ -66,6 +67,9 @@ export default function Home() {
   if (isRegistrationAllowed != null && !isRegistrationAllowed) {
     return (
       <main className="h-screen">
+        <Helmet>
+          <title>Clipable - Register</title>
+        </Helmet>
         <div className="container mx-auto flex flex-col space-y-6 justify-center items-center py-3">
           <Alert type="error" message="Registration is disabled for this site" />
         </div>
@@ -75,6 +79,9 @@ export default function Home() {
 
   return (
     <main className="h-screen">
+      <Helmet>
+        <title>Clipable - Register</title>
+      </Helmet>
       <div className="container mx-auto flex flex-col space-y-6 justify-center items-center py-3">
         {state !== State.Idle && (
           <Alert type={state === State.Success ? "success" : "error"} message={messageBasedOnState(state)} />

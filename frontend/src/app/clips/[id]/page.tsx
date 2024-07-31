@@ -1,10 +1,11 @@
 "use client";
 
+import { Helmet } from "react-helmet";
 import { deleteCip, getClip, Clip, updateClipDetails } from "@/shared/api";
 import { formatDate } from "@/shared/date-formatter";
 import { formatViewsCount } from "@/shared/views-formatter";
 import dynamic from "next/dynamic";
-import { useState, useEffect, useContext, useRef, useCallback } from "react";
+import { useState, useEffect, useContext, useRef, useCallback, Fragment } from "react";
 import "@ayan4m1/react-shaka-player/dist/ui.css";
 import Link from "next/link";
 import "./player.scss";
@@ -14,11 +15,15 @@ import Modal from "@/shared/modal";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import type { PlayerRefs } from "@ayan4m1/react-shaka-player";
 
+type Props = {
+  params: { id: string };
+};
+
 const ShakaPlayer = dynamic(() => import("@ayan4m1/react-shaka-player").then((module) => module.ReactShakaPlayer), {
   ssr: false,
 });
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page({ params }: Props) {
   const [mainPlayer, setMainPlayer] = useState<PlayerRefs>();
   const [videoDetails, setVideoDetails] = useState<Clip | null>(null);
   const userContext = useContext(UserContext);
@@ -30,7 +35,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const [videoUnlisted, setVideoUnlisted] = useState(false);
 
   useEffect(() => {
-    const { player, videoElement } = mainPlayer as unknown as { player: any; videoElement: HTMLVideoElement; };
+    const { player, videoElement } = mainPlayer as unknown as { player: any; videoElement: HTMLVideoElement };
 
     if (!player) {
       return;
@@ -49,7 +54,6 @@ export default function Page({ params }: { params: { id: string } }) {
       player.unload();
       videoElement.onvolumechange = null;
     };
-
   }, [mainPlayer, params.id]);
 
   const fetchVideo = useCallback(async () => {
@@ -67,11 +71,26 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <main className={`mt-2`}>
+      <Helmet>
+        <title>Clipable - {videoTitle}</title>
+      </Helmet>
       <div className="w-fit mx-auto">
-        <ShakaPlayer onLoad={(player: PlayerRefs) => setMainPlayer(player)} uiConfig={{
-          'overflowMenuButtons': ['picture_in_picture', 'playback_rate', 'quality'],
-          'controlPanelElements': ['play_pause','time_and_duration', 'mute', 'volume', 'spacer', 'overflow_menu', 'fullscreen',]
-        }} autoPlay />
+        <ShakaPlayer
+          onLoad={(player: PlayerRefs) => setMainPlayer(player)}
+          uiConfig={{
+            overflowMenuButtons: ["picture_in_picture", "playback_rate", "quality"],
+            controlPanelElements: [
+              "play_pause",
+              "time_and_duration",
+              "mute",
+              "volume",
+              "spacer",
+              "overflow_menu",
+              "fullscreen",
+            ],
+          }}
+          autoPlay
+        />
       </div>
       {videoDetails && (
         <div className="p-4 mx-auto flex flex-row container">

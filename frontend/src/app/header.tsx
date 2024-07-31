@@ -1,14 +1,15 @@
 "use client";
 
-import { UserContext } from "@/context/user-context";
-import { logout } from "@/shared/api";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useContext } from "react";
+import { logout } from "@/shared/api";
+import { useRouter } from "next/navigation";
+import { UserContext } from "@/context/user-context";
 
 export default function Header() {
   const userContext = useContext(UserContext);
   const router = useRouter();
+
   return (
     <header className="navbar bg-base-300">
       <nav className="flex w-full px-2 lg:px-8" aria-label="Top">

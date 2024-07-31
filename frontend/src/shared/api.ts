@@ -75,7 +75,19 @@ export const getUsersClips = async (userId: string): Promise<Clip[]> => {
   return response.json();
 };
 
-export const getUser = async (): Promise<User | undefined> => {
+export const getUser = async (userId: string): Promise<User | undefined> => {
+  const response = await fetch(`${API_URL}/users/${userId}`, {
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (response.ok) {
+    return response.json();
+  }
+};
+
+export const getCurrentUser = async (): Promise<User | undefined> => {
   const response = await fetch(`${API_URL}/users/me`, {
     credentials: "include",
     headers: {
@@ -152,7 +164,7 @@ export const updateClipDetails = async (
     title: string;
     description: string;
     unlisted: boolean;
-  }
+  },
 ): Promise<boolean> => {
   const response = await fetch(`${API_URL}/clips/${videoId}`, {
     method: "PATCH",

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSpring, animated } from "react-spring";
+import { Helmet } from "react-helmet";
 
 enum State {
   Idle,
@@ -132,6 +133,9 @@ export default function Home() {
 
   return (
     <main className="h-full">
+      <Helmet>
+        <title>Clipable - Upload</title>
+      </Helmet>
       <div className="container w-fit mx-auto flex flex-col space-y-6 justify-center items-center py-3">
         <div className="form-control w-full max-w-xs">
           <label className="label">
@@ -191,7 +195,7 @@ export default function Home() {
         </button>
       </div>
       <div className="flex flex-col space-y-6 justify-center items-center py-3">
-      {state !== State.Idle && (
+        {state !== State.Idle && (
           <animated.progress
             className="progress progress-accent w-full max-w-xs justify-center items-center"
             value={barvalue.percent}

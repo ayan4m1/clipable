@@ -1,5 +1,5 @@
 "use client";
-import { getUser, User } from "@/shared/api";
+import { getCurrentUser, User } from "@/shared/api";
 import React, { createContext, useEffect, useState } from "react";
 
 interface UserContext {
@@ -24,7 +24,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   useEffect(() => {
     const fetchUser = async () => {
       setLoading(true);
-      const user = await getUser();
+      const user = await getCurrentUser();
       if (user) {
         setUser(user);
       }
