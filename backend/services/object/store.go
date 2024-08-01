@@ -79,8 +79,8 @@ func (s *store) PutObject(ctx context.Context, cid int64, filename string, r io.
 	s.contexts.Set(objectPath, cancel)
 	defer s.contexts.Remove(objectPath)
 
-	buffer := make([]byte, 16*MB)
-	parts := make([]minio.CopySrcOptions, int(math.Round(float64(s.cfg.MaxUploadSizeBytes)/float64(16*MB)))+1)
+	buffer := make([]byte, 256*MB)
+	parts := make([]minio.CopySrcOptions, int(math.Round(float64(s.cfg.MaxUploadSizeBytes)/float64(256*MB)))+1)
 
 	defer s.DeleteObjects(ctx, cid, filename+"-")
 
