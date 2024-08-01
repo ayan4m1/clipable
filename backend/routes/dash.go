@@ -15,6 +15,7 @@ func (r *Routes) GetStreamFile(u *models.User, req *http.Request) (int, io.ReadC
 	vars := vars(req)
 
 	if !r.ObjectStore.HasObject(req.Context(), vars.CID, vars.Filename) {
+		log.WithField("filename", vars.Filename).Error("Object does not exist")
 		return http.StatusNotFound, nil, nil, nil
 	}
 
@@ -22,6 +23,7 @@ func (r *Routes) GetStreamFile(u *models.User, req *http.Request) (int, io.ReadC
 	objReader, size, etag, err := r.ObjectStore.GetObject(req.Context(), vars.CID, vars.Filename)
 
 	if err != nil {
+		log.WithError(err).Error("failed to read from minio")
 		return http.StatusInternalServerError, nil, nil, errors.Wrap(err, "failed to get object")
 	}
 
@@ -40,12 +42,14 @@ func (r *Routes) GetStreamFile(u *models.User, req *http.Request) (int, io.ReadC
 		clip, err := r.Clips.Find(req.Context(), vars.CID)
 
 		if err != nil {
+			log.WithError(err).Error("failed to find clip")
 			return http.StatusInternalServerError, nil, nil, errors.Wrap(err, "failed to find clip")
 		}
 
 		clip.Views++
 
 		if err := r.Clips.Update(req.Context(), clip, boil.Whitelist(models.ClipColumns.Views)); err != nil {
+			log.WithError(err).Error("failed to update clip")
 			return http.StatusInternalServerError, nil, nil, errors.Wrap(err, "failed to update clip")
 		}
 	}
@@ -53,6 +57,7 @@ func (r *Routes) GetStreamFile(u *models.User, req *http.Request) (int, io.ReadC
 	ranges, err := http_range.ParseRange(req.Header.Get("Range"), size)
 
 	if err != nil {
+		log.WithError(err).Error("invalid range")
 		return http.StatusBadRequest, StringToStream(errors.Wrap(err, "Invalid Range").Error()), nil, nil
 	}
 
@@ -84,6 +89,7 @@ func (r *Routes) GetStreamFile(u *models.User, req *http.Request) (int, io.ReadC
 		_, err = objReader.Seek(ranges[0].Start, io.SeekStart)
 
 		if err != nil {
+			log.WithError(err).Error("failed to seek to start of range")
 			return http.StatusInternalServerError, nil, nil, errors.Wrap(err, "failed to seek to start of range")
 		}
 
