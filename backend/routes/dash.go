@@ -9,6 +9,7 @@ import (
 	"github.com/friendsofgo/errors"
 	"github.com/gotd/contrib/http_range"
 	"github.com/volatiletech/sqlboiler/v4/boil"
+	log "github.com/sirupsen/logrus"
 )
 
 func (r *Routes) GetStreamFile(u *models.User, req *http.Request) (int, io.ReadCloser, http.Header, error) {
