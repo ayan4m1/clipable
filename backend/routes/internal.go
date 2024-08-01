@@ -122,7 +122,7 @@ func (r *Routes) ReadObject(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if !r.ObjectStore.HasObject(context.Background(), cid, vars["file"]) {
-		log.WithField("filename", vars["file"]).Error("File not found")
+		log.WithField("cid", cid).WithField("filename", vars["file"]).Error("File not found")
 		http.Error(w, "Not Found", http.StatusNotFound)
 		return
 	}
